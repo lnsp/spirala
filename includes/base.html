@@ -1,0 +1,52 @@
+<!-- (c) 2017 The Spirala Maintainers <maintainer@spirala.co> -->
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>{{ .Title }}</title>
+        <!-- Required meta tags -->
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+        <!-- Bootstrap includes -->
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.2/css/bootstrap.min.css" integrity="sha384-PsH8R72JQ3SOdhVi3uxftmaW6Vc51MKb0q5P2rRUpPvrszuE4W1povHYgTpBfshb" crossorigin="anonymous">
+        <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.3/umd/popper.min.js" integrity="sha384-vFJXuSJphROIrBnz7yo7oB41mKfc8JzQZiCq4NCceLEaO4IHwicKwpJf9c9IpFgh" crossorigin="anonymous"></script>
+        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.2/js/bootstrap.min.js" integrity="sha384-alpBpkh1PFOepccYVYDB4do5UnbKysX5WZXm3XxPqe5iKTfUKjNkCk9SaVuEZflJ" crossorigin="anonymous"></script>
+        <!-- Customized styles -->
+        <link href="/static/css/base.css" rel="stylesheet">
+        <!-- Additional fonts -->
+        <link href="https://fonts.googleapis.com/css?family=Rubik" rel="stylesheet"> 
+        <!-- Additional site includes -->
+        {{ block "head-includes" . }}{{ end }}
+    </head>
+    <body>
+        <div class="container mt-3">
+            <!-- Header bar with navigation -->
+            <header class="header clearfix pt-3 pb-3">
+                <nav>
+                    <ul class="nav nav-pills float-right">
+                        {{ range .Nav }}
+                        <li class="nav-item">
+                            {{ if .Active }}
+                            <a class="nav-link active" href="{{ .Link }}">{{ .Name }}</a>
+                            {{ else }}
+                            <a class="nav-link" href="{{ .Link }}">{{ .Name }}</a>
+                            {{ end }}
+                        </li>
+                        {{ end }}
+                    </ul>
+                </nav>
+                <h3 class="text-muted"><img alt="Spirala" src="/static/images/logo.png" style="height: 1.5em"></h3>
+            </header>
+            <!-- Main content block -->
+            <hr>
+            {{ block "main-content" . }}{{ end }}
+            <hr>
+            <!-- Footer with credits -->
+            <footer>
+                <p class="text-muted">
+                    &copy; {{ .Year }} The Spirala Maintainers
+                </p>
+            </footer>
+        </div>
+    </body>
+</html>
