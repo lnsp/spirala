@@ -1,4 +1,8 @@
 # ![Spirala](https://user-images.githubusercontent.com/3391295/33789830-b4e396c6-dc7b-11e7-97db-e47d4e22aca6.png)
+[![GitHub last commit](https://img.shields.io/github/last-commit/lnsp/spirala.svg?style=flat-square)](https://github.com/lnsp/spirala)
+[![Docker Stars](https://img.shields.io/docker/stars/lnsp/spirala.svg?style=flat-square)](https://hub.docker.com/r/lnsp/spirala/)
+[![Docker Automated build](https://img.shields.io/docker/automated/lnsp/spirala.svg?style=flat-square)](https://hub.docker.com/r/lnsp/spirala/)
+[![license](https://img.shields.io/github/license/lnsp/spirala.svg?style=flat-square)](https://github.com/lnsp/spirala)
 
 This is the repository of the Spirala Project, a self-hosted private cloud platform based on Docker Swarm.
 It was created to replace easy-to-use systems like Dokku that cannot be used for Docker Swarm. The release target is to provide
