@@ -3,9 +3,9 @@ package main
 import (
 	"os"
 
-	"github.com/Sirupsen/logrus"
 	docker "github.com/fsouza/go-dockerclient"
 	"github.com/lnsp/spirala/webui"
+	"github.com/sirupsen/logrus"
 	"github.com/urfave/cli"
 )
 

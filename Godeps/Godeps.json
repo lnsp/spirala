@@ -21,11 +21,6 @@
 			"Rev": "cd527374f1e5bff4938207604a14f2e38a9cf512"
 		},
 		{
-			"ImportPath": "github.com/Sirupsen/logrus",
-			"Comment": "v1.0.4",
-			"Rev": "d682213848ed68c0a260ca37d6dd5ace8423f5ba"
-		},
-		{
 			"ImportPath": "github.com/containerd/continuity/pathdriver",
 			"Rev": "0cf103d319cc2d7efe085224094f466d1f8b9640"
 		},
