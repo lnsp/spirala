@@ -165,6 +165,10 @@
 			"Rev": "0dadbb0345b35ec7ef35e228dabb8de89a65bf52"
 		},
 		{
+			"ImportPath": "github.com/dustin/go-humanize",
+			"Rev": "bb3d318650d48840a39aa21a027c6630e198e626"
+		},
+		{
 			"ImportPath": "github.com/fsouza/go-dockerclient",
 			"Comment": "docker-1.9/go-1.4-480-gdf05870",
 			"Rev": "df0587029c84fb4b7dc88444ea63deb665cfedef"

@@ -1,0 +1,26 @@
+{{ block "main-content" . }}
+
+<p class="text-center text-muted">You have {{ .ServiceCount }} {{ if eq .ServiceCount 1 }} service {{ else }} services {{ end }}  deployed on your swarm.</p>
+<table class="table">
+    <thead>
+        <th scope="col">#</th>
+        <th scope="col">Name</th>
+        <th scope="col">Image</th>
+        <th scope="col">Instances</th>
+        <th scope="col">Last update</th>
+    </thead>
+    <tbody>
+        {{ range .Services }}
+        <tr>
+            <td scope="row">{{ .ID }}</td>
+            <td scope="row">{{ .Name }}</td>
+            <td scope="row">{{ .Image }}</td>
+            <td scope="row">{{ .InstanceMode }}</td>
+            <td scope="row">{{ .LastUpdate }}</td>
+        </tr>
+        {{ end }}
+    </tbody>
+</table>
+
+
+{{ end }}
