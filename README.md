@@ -11,6 +11,19 @@ a fully integrated private cloud using only Open-Source components.
 - [ ] Use Stack templates for easy service creation
 - [ ] Add workflow interface to allow visual infrastructure composition
 
+## Installation
+Before you run the platform on your Docker host, you should be sure of the following things.
+- your host is part of a Docker Swarm
+- your host has the role Manager
+
+You can then just run the following script on your host.
+```bash
+git clone https://github.com/lnsp/spirala.git
+cd spirala
+docker build -t spirala .
+docker run -v /var/run/docker.sock:/var/run/docker.sock -p 8080:8080 spirala
+```
+
 ## Copyright
 The Spirala project is developed by the Spirala community and administrated by the Spirala maintainers.
 The logo credits go to Simon Martin from the Noun Project for his beautiful Penrose Pentagon.
