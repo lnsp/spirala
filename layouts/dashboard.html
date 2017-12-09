@@ -1,0 +1,94 @@
+{{ block "main-content" . }}
+<div class="row">
+    <div class="col-lg-6">
+        <div class="card">
+            <div class="card-body">
+                <h4 class="card-title">Swarm</h4>
+                <div class="card-text text-muted">Cluster-specific statistics and information.</div>
+            </div>
+            <ul class="list-group list-group-flush">
+                <li class="list-group-item">
+                    <div class="row">
+                        <div class="col-6">
+                            <strong>ID</strong>
+                        </div>
+                        <div class="col-6">{{ .System.Swarm }}</div>
+                    </div>
+                </li>
+                <li class="list-group-item">
+                    <div class="row">
+                        <div class="col-6">
+                            <strong>Version</strong>
+                        </div>
+                        <div class="col-6">{{ .System.SwarmVersion }}</div>
+                    </div>
+                </li>
+                <li class="list-group-item">
+                    <div class="row">
+                        <div class="col-6">
+                            <strong>Nodes</strong>
+                        </div>
+                        <div class="col-6">{{ .System.Nodes }}</div>
+                    </div>
+                </li>
+                <li class="list-group-item">
+                    <div class="row">
+                        <div class="col-6">
+                            <strong>Managers</strong>
+                        </div>
+                        <div class="col-6">{{ .System.Managers }}</div>
+                    </div>
+                </li>
+            </ul>
+            <div class="card-body">
+                <a href="/nodes">Learn more</a>
+            </div>
+        </div>
+    </div>
+    <div class="col-lg-6">
+        <div class="card">
+            <div class="card-body">
+                <h4 class="card-title">System</h4>
+                <div class="card-text text-muted">Generic information about your host system.</div>
+            </div>
+            <ul class="list-group list-group-flush">
+                <li class="list-group-item">
+                    <div class="row">
+                        <div class="col-6">
+                            <strong>Docker</strong>
+                        </div>
+                        <div class="col-6">{{ .System.ServerVersion }}</div>
+                    </div>
+                </li>
+                <li class="list-group-item">
+                    <div class="row">
+                        <div class="col-6">
+                            <strong>OS</strong>
+                        </div>
+                        <div class="col-6">{{ .System.ServerVersion }}</div>
+                    </div>
+                </li>
+                <li class="list-group-item">
+                    <div class="row">
+                        <div class="col-6">
+                            <strong>Architecture</strong>
+                        </div>
+                        <div class="col-6">{{ .System.Architecture }}</div>
+                    </div>
+                </li>
+                <li class="list-group-item">
+                    <div class="row">
+                        <div class="col-6">
+                            <strong>Kernel</strong>
+                        </div>
+                        <div class="col-6">{{ .System.KernelVersion }}</div>
+                    </div>
+                </li>
+            </ul>
+            <div class="card-body">
+                <a href="/system">Learn more</a>
+            </div>
+        </div>
+    </div>
+</div>
+{{ end }}

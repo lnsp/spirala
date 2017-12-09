@@ -1,6 +1,7 @@
 package routes
 
 import (
+	"fmt"
 	"html/template"
 	"net/http"
 	"path/filepath"
@@ -36,7 +37,12 @@ type SiteContext struct {
 	Nav   []NavContext
 }
 
-func (ctx *SiteContext) SetActive(nav string) *SiteContext {
+type ErrorContext struct {
+	BaseContext
+	Err string
+}
+
+func (ctx SiteContext) SetActive(nav string) SiteContext {
 	for i := range ctx.Nav {
 		if ctx.Nav[i].Name == nav {
 			ctx.Nav[i].Active = true
@@ -49,8 +55,12 @@ type BaseContext struct {
 	SiteContext
 }
 
-func (router *Router) getBaseContext() *BaseContext {
-	return &BaseContext{
+func (router *Router) showError(w http.ResponseWriter, r *http.Request, err error) {
+	fmt.Fprintln(w, err)
+}
+
+func (router *Router) getBaseContext() BaseContext {
+	return BaseContext{
 		SiteContext{
 			Title: "Spirala",
 			Year:  time.Now().Year(),
