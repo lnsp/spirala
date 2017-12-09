@@ -22,7 +22,7 @@ const (
 
 type Router struct {
 	mux       *mux.Router
-	client    *docker.Client
+	endpoints []*docker.Client
 	templates map[string]*template.Template
 }
 
@@ -149,11 +149,11 @@ func (router *Router) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 }
 
 // New instantiates a new Web UI route handler.
-func New(client *docker.Client) http.Handler {
+func New(endpoints []*docker.Client) http.Handler {
 	// TODO: Add route implementations
 	router := &Router{
-		mux:    mux.NewRouter(),
-		client: client,
+		mux:       mux.NewRouter(),
+		endpoints: endpoints,
 	}
 	if err := router.initTemplates(); err != nil {
 		logrus.Panic(err)

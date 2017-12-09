@@ -10,9 +10,9 @@ import (
 
 const DefaultPort = ":8080"
 
-func ListenAndServe(hostport string, client *docker.Client) error {
+func ListenAndServe(hostport string, clients []*docker.Client) error {
 	srv := &http.Server{
-		Handler:      routes.New(client),
+		Handler:      routes.New(clients),
 		Addr:         hostport,
 		WriteTimeout: 15 * time.Second,
 		ReadTimeout:  15 * time.Second,

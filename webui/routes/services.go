@@ -1,13 +1,13 @@
 package routes
 
 import (
-	"fmt"
 	"net/http"
 	"strings"
 
 	"github.com/docker/docker/api/types/swarm"
 	humanize "github.com/dustin/go-humanize"
 	"github.com/fsouza/go-dockerclient"
+	"github.com/pkg/errors"
 )
 
 type ServiceListContext struct {
@@ -21,6 +21,7 @@ type ServiceContext struct {
 	Name         string
 	LastUpdate   string
 	InstanceMode string
+	Instances    uint64
 	Image        string
 }
 
@@ -56,16 +57,24 @@ func (router *Router) getServiceListContext() (ServiceListContext, error) {
 		BaseContext: router.getBaseContext(),
 		Services:    make([]ServiceContext, 0),
 	}
-	services, err := router.client.ListServices(docker.ListServicesOptions{})
+	var (
+		services []swarm.Service
+		err      error
+	)
+	for i := 0; i < len(router.endpoints) && services == nil; i++ {
+		services, err = router.endpoints[i].ListServices(docker.ListServicesOptions{})
+	}
 	if err != nil {
-		return serviceList, err
+		return serviceList, errors.Wrap(err, "no endpoint reachable")
 	}
 	for _, svc := range services {
 		lastUpdate := humanize.Time(svc.UpdatedAt)
 		baseImage := router.getBaseImage(svc.Spec.TaskTemplate.ContainerSpec.Image)
 		instanceMode := "Global"
+		instanceCount := uint64(0)
 		if svc.Spec.Mode.Replicated != nil {
-			instanceMode = fmt.Sprintf("Replicated (%d)", svc.Spec.Mode.Replicated.Replicas)
+			instanceMode = "Replicated"
+			instanceCount = *svc.Spec.Mode.Replicated.Replicas
 		}
 		serviceList.Services = append(serviceList.Services, ServiceContext{
 			ID:           svc.ID,
@@ -73,6 +82,7 @@ func (router *Router) getServiceListContext() (ServiceListContext, error) {
 			LastUpdate:   lastUpdate,
 			Image:        baseImage,
 			InstanceMode: instanceMode,
+			Instances:    instanceCount,
 		})
 	}
 	serviceList.ServiceCount = len(serviceList.Services)

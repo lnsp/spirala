@@ -25,8 +25,9 @@ func main() {
 	app.Copyright = "(c) 2017 The Spirala Maintainers"
 	app.Author = "The Spirala Maintainers <maintainer@spirala.co>"
 	app.Version = "0.1.0"
+
 	app.Flags = []cli.Flag{
-		cli.StringFlag{
+		cli.StringSliceFlag{
 			Name:   endpointFlag,
 			EnvVar: "DOCKER_ENDPOINT",
 		},
@@ -49,34 +50,31 @@ func main() {
 	}
 	app.Action = func(ctx *cli.Context) error {
 		var (
-			client   *docker.Client
-			err      error
-			endpoint string
+			clients []*docker.Client
 		)
-		if declaredEndpoint := ctx.String(endpointFlag); endpoint != declaredEndpoint {
-			endpoint = declaredEndpoint
-		} else {
-			endpoint = localEndpoint
-		}
-		if enableTLS := ctx.Bool(tlsFlag); enableTLS {
+		endpoints := ctx.StringSlice(endpointFlag)
+		for _, ep := range endpoints {
+			var cli *docker.Client
+			var err error
+			if ctx.Bool(tlsFlag) {
+				cli, err = docker.NewTLSClient(ep, ctx.String(tlsCertFlag), ctx.String(tlsKeyFlag), ctx.String(tlsCAFlag))
+			} else {
+				cli, err = docker.NewClient(ep)
+			}
+			if err != nil {
+				logrus.WithFields(logrus.Fields{
+					"err":      err,
+					"endpoint": ep,
+					"tls":      ctx.Bool(tlsFlag),
+				}).Warning("Could not connect to endpoint")
+			}
+			clients = append(clients, cli)
 			logrus.WithFields(logrus.Fields{
-				"endpoint": endpoint,
-			})
-			client, err = docker.NewTLSClient(endpoint, ctx.String(tlsCertFlag), ctx.String(tlsKeyFlag), ctx.String(tlsCAFlag))
-		} else {
-			client, err = docker.NewClient(endpoint)
-		}
-		if err != nil {
-			logrus.WithFields(logrus.Fields{
-				"err": err,
-			}).Panic("Could not connect to endpoint")
-		} else {
-			logrus.WithFields(logrus.Fields{
-				"endpoint": endpoint,
+				"endpoint": ep,
 				"tls":      ctx.Bool(tlsFlag),
 			}).Info("Connected to endpoint")
 		}
-		return webui.ListenAndServe(webui.DefaultPort, client)
+		return webui.ListenAndServe(webui.DefaultPort, clients)
 	}
 	app.Run(os.Args)
 }

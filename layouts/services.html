@@ -6,7 +6,7 @@
         <th scope="col">#</th>
         <th scope="col">Name</th>
         <th scope="col">Image</th>
-        <th scope="col">Instances</th>
+        <th scope="col">Replicas</th>
         <th scope="col">Last update</th>
     </thead>
     <tbody>
@@ -15,7 +15,11 @@
             <td scope="row">{{ .ID }}</td>
             <td scope="row">{{ .Name }}</td>
             <td scope="row">{{ .Image }}</td>
-            <td scope="row">{{ .InstanceMode }}</td>
+            {{ if eq .InstanceMode "Global" }}
+            <td scope="row"><span class="text-muted">global</span></td>
+            {{ else }}
+            <td scope="row">{{ .Instances }} <span class="text-muted">(replicated)</span></td>
+            {{ end }}
             <td scope="row">{{ .LastUpdate }}</td>
         </tr>
         {{ end }}

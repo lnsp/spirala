@@ -1,6 +1,11 @@
 package routes
 
-import "net/http"
+import (
+	"net/http"
+
+	"github.com/fsouza/go-dockerclient"
+	"github.com/pkg/errors"
+)
 
 func (router *Router) showDashboard(w http.ResponseWriter, r *http.Request) {
 	context, err := router.getDashboardContext()
@@ -13,6 +18,7 @@ func (router *Router) showDashboard(w http.ResponseWriter, r *http.Request) {
 }
 
 type SystemContext struct {
+	ID              string
 	ServerVersion   string
 	KernelVersion   string
 	OperatingSystem string
@@ -28,19 +34,26 @@ type DashboardContext struct {
 }
 
 func (router *Router) getSystemContext() (SystemContext, error) {
-	dockerInfo, err := router.client.Info()
+	var (
+		info *docker.DockerInfo
+		err  error
+	)
+	for i := 0; i < len(router.endpoints) && info == nil; i++ {
+		info, err = router.endpoints[i].Info()
+	}
 	if err != nil {
-		return SystemContext{}, err
+		return SystemContext{}, errors.Wrap(err, "no endpoints reachable")
 	}
 	return SystemContext{
-		ServerVersion:   dockerInfo.ServerVersion,
-		KernelVersion:   dockerInfo.KernelVersion,
-		OperatingSystem: dockerInfo.OperatingSystem,
-		Architecture:    dockerInfo.Architecture,
-		Swarm:           dockerInfo.Swarm.Cluster.ID,
-		SwarmVersion:    dockerInfo.Swarm.Cluster.Version.Index,
-		Nodes:           dockerInfo.Swarm.Nodes,
-		Managers:        dockerInfo.Swarm.Managers,
+		ID:              info.ID,
+		ServerVersion:   info.ServerVersion,
+		KernelVersion:   info.KernelVersion,
+		OperatingSystem: info.OperatingSystem,
+		Architecture:    info.Architecture,
+		Swarm:           info.Swarm.Cluster.ID,
+		SwarmVersion:    info.Swarm.Cluster.Version.Index,
+		Nodes:           info.Swarm.Nodes,
+		Managers:        info.Swarm.Managers,
 	}, nil
 }
 
