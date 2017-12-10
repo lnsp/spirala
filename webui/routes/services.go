@@ -2,6 +2,7 @@ package routes
 
 import (
 	"net/http"
+	"sort"
 	"strings"
 
 	"github.com/docker/docker/api/types/swarm"
@@ -23,6 +24,7 @@ type ServiceContext struct {
 	InstanceMode string
 	Instances    uint64
 	Image        string
+	ImageTag     string
 }
 
 func (router *Router) parseServiceUpdateStatus(status *swarm.UpdateStatus) string {
@@ -48,11 +50,12 @@ func (router *Router) parseServiceUpdateStatus(status *swarm.UpdateStatus) strin
 	return "Unknown"
 }
 
-func (router *Router) getBaseImage(s string) string {
-	return strings.Split(s, "@")[0]
+func (router *Router) getBaseImage(s string) (string, string) {
+	components := strings.Split(strings.Split(s, "@")[0], ":")
+	return components[0], components[1]
 }
 
-func (router *Router) getServiceListContext() (ServiceListContext, error) {
+func (router *Router) getServiceListContext(limit int) (ServiceListContext, error) {
 	serviceList := ServiceListContext{
 		BaseContext: router.getBaseContext(),
 		Services:    make([]ServiceContext, 0),
@@ -67,9 +70,11 @@ func (router *Router) getServiceListContext() (ServiceListContext, error) {
 	if err != nil {
 		return serviceList, errors.Wrap(err, "no endpoint reachable")
 	}
-	for _, svc := range services {
+	sort.Slice(services, func(i, j int) bool { return services[i].UpdatedAt.After(services[j].UpdatedAt) })
+	for i := 0; i < len(services) && (limit == 0 || i < limit); i++ {
+		svc := services[i]
 		lastUpdate := humanize.Time(svc.UpdatedAt)
-		baseImage := router.getBaseImage(svc.Spec.TaskTemplate.ContainerSpec.Image)
+		imageName, imageTag := router.getBaseImage(svc.Spec.TaskTemplate.ContainerSpec.Image)
 		instanceMode := "Global"
 		instanceCount := uint64(0)
 		if svc.Spec.Mode.Replicated != nil {
@@ -80,7 +85,8 @@ func (router *Router) getServiceListContext() (ServiceListContext, error) {
 			ID:           svc.ID,
 			Name:         svc.Spec.Name,
 			LastUpdate:   lastUpdate,
-			Image:        baseImage,
+			Image:        imageName,
+			ImageTag:     imageTag,
 			InstanceMode: instanceMode,
 			Instances:    instanceCount,
 		})
@@ -90,7 +96,7 @@ func (router *Router) getServiceListContext() (ServiceListContext, error) {
 }
 
 func (router *Router) showServices(w http.ResponseWriter, r *http.Request) {
-	context, err := router.getServiceListContext()
+	context, err := router.getServiceListContext(0)
 	if err != nil {
 		router.showError(w, r, err)
 		return

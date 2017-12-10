@@ -1,6 +1,93 @@
 {{ block "main-content" . }}
 <div class="row">
-    <div class="col-lg-6">
+    <div class="col-lg-6 mb-3">
+        <div class="card">
+            <div class="card-body">
+                <h4 class="card-title">Services</h4>
+                <div class="card-text text-muted">Latest services running on the swarm.</div>
+            </div>
+            <ul class="list-group list-group-flush">
+                <li class="list-group-item">
+                    <div class="row">
+                        <div class="col-6 col-md-4">
+                            <strong>Name</strong>
+                        </div>
+                        <div class="col">
+                            <strong>Image</strong>
+                        </div>
+                        <div class="col-4 d-none d-md-block">
+                            <strong>Instances</strong>
+                        </div>
+                    </div>
+                </li>
+                {{ range .Services }}
+                <li class="list-group-item">
+                    <div class="row">
+                        <div class="col-6 col-md-4">
+                            {{ .Name }}
+                        </div>
+                        <div class="col">
+                            {{ .Image }}:<span class="text-muted">{{ .ImageTag }}
+                        </div>
+                        <div class="col-4 d-none d-md-block">
+                            {{ if eq .InstanceMode "Global" }}
+                            <span class="text-muted">global</span>
+                            {{ else }}
+                            {{ .Instances }} <span class="text-muted">(replicated)</span>
+                            {{ end }}
+                        </div>
+                    </div>
+                </li>
+                {{ end }}
+            </ul>
+            <div class="card-body">
+                <a href="/services">Show more</a>
+            </div>
+        </div>
+    </div>
+    <div class="col-lg-6 mb-3">
+        <div class="card">
+            <div class="card-body">
+                <h4 class="card-title">Nodes</h4>
+                <div class="card-text text-muted">Status information about the swarm nodes.</div>
+            </div>
+            <ul class="list-group list-group-flush">
+                <li class="list-group-item">
+                    <div class="row">
+                        <div class="offset-2 col-5"><strong>Hostname</strong></div>
+                        <div class="col-5"><strong>Role</strong></div>
+                    </div>
+                </li>
+                {{ range .Nodes }}
+                <li class="list-group-item">
+                    <div class="row">
+                        <div class="col-2 text-center">
+                            {{ if eq .Status "ready" }}
+                            <span class="text-success" data-toggle="tooltip" data-placement="top" title="ready">&#9679;</span>
+                            {{ else if eq .Status "down" }}
+                            <span class="text-danger" data-toggle="tooltip" data-placement="top" title="down">&#9679;</span>
+                            {{ else if eq .Status "disconnected" }}
+                            <span class="text-warning" data-toggle="tooltip" data-placement="top" title="disconnected">&#9679;</span>
+                            {{ else }}
+                            <span class="text-secondary" data-toggle="tooltip" data-placement="top" title="{{ .Status }}">&#9679;</span>
+                            {{ end }}
+                        </div>
+                        <div class="col-5">
+                            {{ .Hostname }}
+                        </div>
+                        <div class="col-5">
+                            {{ .Role }}
+                        </div>
+                    </div>
+                </li>
+                {{ end }}
+            </ul>
+            <div class="card-body">
+                <a href="/nodes">Show more</a>
+            </div>
+        </div>
+    </div>
+    <div class="col-lg-6 mb-3">
         <div class="card">
             <div class="card-body">
                 <h4 class="card-title">Swarm</h4>
@@ -41,7 +128,7 @@
                 </li>
             </ul>
             <div class="card-body">
-                <a href="/nodes">Learn more</a>
+                <a href="/swarm">Learn more</a>
             </div>
         </div>
     </div>
@@ -52,14 +139,6 @@
                 <div class="card-text text-muted">Generic information about your host system.</div>
             </div>
             <ul class="list-group list-group-flush">
-                <li class="list-group-item">
-                    <div class="row">
-                        <div class="col-6">
-                            <strong>System ID</strong>
-                        </div>
-                        <div class="col-6">{{ .System.ID }}</div>
-                    </div>
-                </li>
                 <li class="list-group-item">
                     <div class="row">
                         <div class="col-6">

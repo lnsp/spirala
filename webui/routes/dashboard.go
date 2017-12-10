@@ -30,6 +30,8 @@ type SystemContext struct {
 
 type DashboardContext struct {
 	BaseContext
+	ServiceListContext
+	NodeListContext
 	System SystemContext
 }
 
@@ -65,6 +67,16 @@ func (router *Router) getDashboardContext() (DashboardContext, error) {
 	if err != nil {
 		return dashboard, err
 	}
+	services, err := router.getServiceListContext(4)
+	if err != nil {
+		return dashboard, err
+	}
+	nodes, err := router.getNodeListContext(4)
+	if err != nil {
+		return dashboard, err
+	}
+	dashboard.NodeListContext = nodes
+	dashboard.ServiceListContext = services
 	dashboard.System = system
 	return dashboard, nil
 }

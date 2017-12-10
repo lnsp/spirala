@@ -14,7 +14,7 @@
         <tr>
             <td scope="row">{{ .ID }}</td>
             <td scope="row">{{ .Name }}</td>
-            <td scope="row">{{ .Image }}</td>
+            <td scope="row">{{ .Image }}:<span class="text-muted">{{ .ImageTag }}</span></td>
             {{ if eq .InstanceMode "Global" }}
             <td scope="row"><span class="text-muted">global</span></td>
             {{ else }}
