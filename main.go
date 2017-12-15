@@ -11,7 +11,7 @@ import (
 
 const (
 	localEndpoint = "unix:///var/run/docker.sock"
-	endpointFlag  = "endpoint"
+	endpointFlag  = "H"
 	tlsFlag       = "tls"
 	tlsKeyFlag    = "tls-key"
 	tlsCertFlag   = "tls-cert"
