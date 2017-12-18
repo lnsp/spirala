@@ -50,7 +50,7 @@ func (router *Router) parseServiceUpdateStatus(status *swarm.UpdateStatus) strin
 	return "Unknown"
 }
 
-func (router *Router) getBaseImage(s string) (string, string) {
+func (router *Router) getBaseImageFromTagDigest(s string) (string, string) {
 	components := strings.Split(strings.Split(s, "@")[0], ":")
 	return components[0], components[1]
 }
@@ -74,7 +74,7 @@ func (router *Router) getServiceListContext(limit int) (ServiceListContext, erro
 	for i := 0; i < len(services) && (limit == 0 || i < limit); i++ {
 		svc := services[i]
 		lastUpdate := humanize.Time(svc.UpdatedAt)
-		imageName, imageTag := router.getBaseImage(svc.Spec.TaskTemplate.ContainerSpec.Image)
+		imageName, imageTag := router.getBaseImageFromTagDigest(svc.Spec.TaskTemplate.ContainerSpec.Image)
 		instanceMode := "Global"
 		instanceCount := uint64(0)
 		if svc.Spec.Mode.Replicated != nil {
