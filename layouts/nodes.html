@@ -1,7 +1,7 @@
 {{ block "main-content" . }}
 
 <p class="text-center text-muted">You have {{ .NodeCount }} {{ if eq .NodeCount 1 }} node {{ else }} nodes {{ end }} deployed on your swarm.</p>
-<table class="table">
+<table class="table table-hover">
     <thead>
         <th scope="col"></th>
         <th scope="col">#</th>
