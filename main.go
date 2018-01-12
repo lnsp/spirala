@@ -16,6 +16,7 @@ const (
 	tlsKeyFlag    = "tls-key"
 	tlsCertFlag   = "tls-cert"
 	tlsCAFlag     = "tls-ca"
+	debugFlag     = "debug"
 )
 
 func main() {
@@ -27,6 +28,10 @@ func main() {
 	app.Version = "0.1.0"
 
 	app.Flags = []cli.Flag{
+		cli.BoolFlag{
+			Name:   debugFlag,
+			EnvVar: "DEBUG",
+		},
 		cli.StringSliceFlag{
 			Name:   endpointFlag,
 			EnvVar: "DOCKER_ENDPOINT",
@@ -52,6 +57,12 @@ func main() {
 		var (
 			clients []*docker.Client
 		)
+		// Enable debugging mode if requested
+		if ctx.Bool(debugFlag) {
+			logrus.SetLevel(logrus.DebugLevel)
+			logrus.Debug("Debug mode enabled")
+		}
+		// Connect to the first available endpoint
 		endpoints := ctx.StringSlice(endpointFlag)
 		for _, ep := range endpoints {
 			var cli *docker.Client
