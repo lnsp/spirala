@@ -22,7 +22,7 @@ Before you run the platform on your Docker host, you should be sure of the follo
 
 You can then just run the following script on your host.
 ```bash
-docker run -v /var/run/docker.sock:/var/run/docker.sock -p 8080:8080 lnsp/spirala /go/bin/spirala --endpoint unix:///var/run/docker.sock
+docker run -v /var/run/docker.sock:/var/run/docker.sock -p 8080:8080 lnsp/spirala /go/bin/spirala -H unix:///var/run/docker.sock
 ```
 You can now open your browser and point it to `http://localhost:8080`!
 
