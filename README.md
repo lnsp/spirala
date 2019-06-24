@@ -10,7 +10,6 @@ a fully integrated private cloud using only Open-Source components.
 
 ## Roadmap
 - [ ] Display information from Docker Client
-- [ ] Allow use of SSL certificates
 - [ ] Create and edit Docker components
 - [ ] Use Stack templates for easy service creation
 - [ ] Add workflow interface to allow visual infrastructure composition
