@@ -1,0 +1,22 @@
+{{ block "main-content" . }}
+
+<p class="text-center text-muted">You have {{ .VolumeCount }} {{ if eq .VolumeCount 1 }} volume {{ else }} volumes {{ end }} stored on your hosts.</p>
+<table class="table table-hover">
+    <thead>
+        <th scope="col">#</th>
+        <th scope="col">Driver</th>
+        <th scope="col">Created</th>
+    </thead>
+    <tbody>
+        {{ range .Volumes }}
+        <tr>
+            <td scope="row">{{ .Name }}</td>
+            <td scope="row">{{ .Driver }}</td>
+            <td scope="row">{{ .Created }}</td>
+        </tr>
+        {{ end }}
+    </tbody>
+</table>
+
+
+{{ end }}
