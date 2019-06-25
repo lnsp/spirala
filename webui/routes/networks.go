@@ -10,7 +10,8 @@ type NetworkInstance struct {
 
 type NetworkContext struct {
 	BaseContext
-	Networks []NetworkInstance
+	NetworkCount int
+	Networks     []NetworkInstance
 }
 
 func (router *Router) showNetworks(w http.ResponseWriter, r *http.Request) {
@@ -39,6 +40,7 @@ func (router *Router) getNetworkContext() (NetworkContext, error) {
 				Name:   net.Name,
 				Driver: net.Driver,
 			})
+			context.NetworkCount++
 		}
 	}
 	return context, nil
