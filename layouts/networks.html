@@ -1,0 +1,21 @@
+{{ block "main-content" . }}
+
+<table class="table table-hover">
+    <thead>
+        <th scope="col">#</th>
+        <th scope="col">Name</th>
+        <th scope="col">Driver</th>
+    </thead>
+    <tbody>
+        {{ range .Networks }}
+        <tr>
+            <td scope="row">{{ .ID }}</td>
+            <td scope="row">{{ .Name }}</td>
+            <td scope="row">{{ .Driver }}</td>
+        </tr>
+        {{ end }}
+    </tbody>
+</table>
+
+
+{{ end }}
