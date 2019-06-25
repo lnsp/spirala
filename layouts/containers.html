@@ -1,5 +1,6 @@
 {{ block "main-content" . }}
 
+<p class="text-center text-muted">You have {{ .ContainerCount }} {{ if eq .ContainerCount 1 }} container {{ else }} containers {{ end }} running in your swarm.</p>
 <table class="table table-hover">
     <thead>
         <th scope="col">#</th>

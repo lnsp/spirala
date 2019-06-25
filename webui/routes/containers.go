@@ -19,7 +19,8 @@ type ContainerInstance struct {
 
 type ContainerContext struct {
 	BaseContext
-	Containers []ContainerInstance
+	ContainerCount int
+	Containers     []ContainerInstance
 }
 
 func (router *Router) showContainers(w http.ResponseWriter, r *http.Request) {
@@ -66,6 +67,7 @@ func (router *Router) getContainerContext() (ContainerContext, error) {
 				Node:     t.NodeID,
 				Created:  humanize.Time(t.CreatedAt),
 			})
+			ctx.ContainerCount++
 		}
 	}
 	ctx.SetActive("Containers")
