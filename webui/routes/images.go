@@ -42,6 +42,8 @@ func (router *Router) getBaseImageFromTag(tag string) (string, string) {
 	return components[0], components[1]
 }
 
+const NoneTag = "<none>"
+
 func (router *Router) getImageListContext(limit int) (ImageListContext, error) {
 	imageListContext := ImageListContext{
 		BaseContext: router.getBaseContext(),
@@ -61,11 +63,16 @@ func (router *Router) getImageListContext(limit int) (ImageListContext, error) {
 		return images[i].Created < images[i].Created
 	})
 	for i := 0; i < len(images) && (limit == 0 || i < limit); i++ {
+		// ignore untagged images
 		if len(images[i].RepoTags) < 1 {
 			continue
 		}
 		_, digest := router.getBaseImageFromTag(images[i].ID)
 		base, tag := router.getBaseImageFromTag(images[i].RepoTags[0])
+		// ignore non-tagged images
+		if base == NoneTag {
+			continue
+		}
 		imageListContext.Images = append(imageListContext.Images, ImageContext{
 			ID:         digest[:16],
 			Repository: base,
