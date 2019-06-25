@@ -1,0 +1,25 @@
+{{ block "main-content" . }}
+
+<table class="table table-hover">
+    <thead>
+        <th scope="col">#</th>
+        <th scope="col">Service</th>
+        <th scope="col">Image</th>
+        <th scope="col">Node</th>
+        <th scope="col">Created</th>
+    </thead>
+    <tbody>
+        {{ range .Containers }}
+        <tr>
+            <td scope="row">{{ .ID }}</td>
+            <td scope="row">{{ .Service }}</td>
+            <td scope="row">{{ .Image }}:<span class="text-muted">{{ .ImageTag }}</span></td>
+            <td scope="row">{{ .Node }}</td>
+            <td scope="row">{{ .Created }}</td>
+        </tr>
+        {{ end }}
+    </tbody>
+</table>
+
+
+{{ end }}
