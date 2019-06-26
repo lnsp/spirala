@@ -23,7 +23,7 @@ func main() {
 	app := cli.NewApp()
 	app.Name = "spirala"
 	app.Usage = "Private Cloud platform based on Docker Swarm"
-	app.Copyright = "(c) 2017 The Spirala Maintainers"
+	app.Copyright = "(c) 2017 - 2019 The Spirala Maintainers"
 	app.Author = "The Spirala Maintainers <maintainer@spirala.co>"
 	app.Version = "0.1.0"
 
