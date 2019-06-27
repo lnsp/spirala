@@ -9,7 +9,7 @@ It was created to replace easy-to-use systems like Dokku that cannot be used for
 a fully integrated private cloud using only Open-Source components.
 
 ## Roadmap
-- [ ] Display information from Docker Client
+- [x] Display information from Docker Client
 - [ ] Create and edit Docker components
 - [ ] Use Stack templates for easy service creation
 - [ ] Add workflow interface to allow visual infrastructure composition
